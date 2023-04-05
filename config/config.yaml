@@ -1,0 +1,55 @@
+# Constants
+random_seed: 2023
+
+# Data parameters
+data:
+  raw_data_path: "../data/raw/insurance_data.csv"
+  preprocessed_data_path: "../data/preprocessed/preprocessed_data.csv"
+  target_variable: "CLAIM_STATUS"
+  train_test_split: 0.10
+  train_data_path: "../data/final/train_data.csv"
+  test_data_path: "../data/final/test_data.csv"
+  final_results_path: "../results/trained_model_results.csv"
+
+# Model parameters
+model:
+  model_architecture: "catboost" # supports logistic_regression, xgboost, catboost
+  use_class_weights: True # supports True - use class weights , False - do not use class weights
+  save_model_artifacts_folder: "../models"
+
+# Cat Boost Training parameters
+cat_boost_model:
+  iterations: 1000
+  learning_rate: 0.1
+  random_strength: 0.1
+  depth: 8
+  loss_function: "Multiclass"
+  eval_metric: "AUC"
+  leaf_estimation_method: "Newton"
+
+# Hyperparameters tuninng parameters
+hyeprparameter:
+  tune_hyperparameters: True # supports True - tune model hyperparameters, False - do not tune hyperparameters
+  xgboost:
+    max_depth:
+      min: 3
+      max: 18
+      step_size: 1
+    gamma:
+      min: 1
+      max: 9
+    reg_alpha:
+      min: 40
+      max: 180
+      step_size: 1
+    reg_lambda:
+      min: 0
+      max: 1
+    colsample_bytree:
+      min: 0.5
+      max: 1
+    min_child_weight:
+      min: 0
+      max: 10
+      step_size: 1
+    n_estimators: 180
