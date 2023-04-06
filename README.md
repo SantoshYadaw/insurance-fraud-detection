@@ -19,14 +19,12 @@ In this assessment, we aim to accurately predict whether any given claim is frad
 
 This task is based on [Kaggle - Insurance Claims Fraud Data](https://www.kaggle.com/datasets/mastmustu/insurance-claims-fraud-data)
 
-The codebase is written in python 3.8.16. The model is based on [sklearn](https://scikit-learn.org/stable/) implementation of [Logistic Regression]([https://machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)), [XgBoost](https://xgboost.readthedocs.io/en/stable/) and [CatBoost]([https://towardsdatascience.com/understanding-random-forest-58381e0602d2](https://catboost.ai/)).
-
-Overall, 3 models were considered, namely:
- 1. Logistic Regression (Baseline)
- 2. XGBoost
- 3. CatBoost
+The codebase is written in python 3.8.16. Theree models were considered:
+ 1. [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
+ 2. [XGBoost](https://xgboost.readthedocs.io/en/stable/)
+ 3. [CatBoost](https://catboost.ai/)
  
-Of both models, 2. Gradient Boosting Classifier performed better in terms of both ROC and Accuracy. 
+Of the three models, 2. Gradient Boosting Classifier performed better in terms of both ROC. 
 Gradient Boosting Classifier is implemented in [src](/src). 
 
 ## Usage
@@ -39,7 +37,7 @@ Gradient Boosting Classifier is implemented in [src](/src).
 4. Prediction output will be stored in `results/trained_model_results.csv`
 5. Trained model will be stored in `models/trained_model` 
 
- Configuration files for src/train can be found in [src/config](/src/config). [src](/src) supports Logistic Regression, XGBoost and CatBoost, to change model, simply update [src/config](/src/config).
+Configuration files for src/train can be found in [src/config](/src/config). [src](/src) supports Logistic Regression, XGBoost and CatBoost, to change model, simply update [src/config](/src/config).
 
 ## Exploratory Data Analysis
 Exploratory Data Analysis notebook can be found in [1_eda.ipynb](notebooks/1_eda.ipynb)
@@ -70,10 +68,10 @@ The difference between ROC AUC vs other metrics such as Accuracy or F1 is that R
 
 ROC AUC gets the performance of the model before any threshold tuning by looking at the trade off between True Positive Rate and False Positive Rate. A model with high ROC AUC means that the model performs well in all threshold tuning, and hence could be tuned to maximize any metrics, such as accuracy, F1/F0.5/F2. 
 
-### Other Suggested Metrics - F2.0
-In a situation of imbalance dataset - where only 6.7% positive class, it is useful to use a metric that takes into account both precision and recall, such as F-Score. A naive metric such as Accuracy will give a high score of 93.3% when a bad algorithm classify all instances as 0 (no loan default). 
+### Other Suggested Metrics - F0.5
+In a situation of imbalance dataset - where only 6.7% positive class, it is useful to use a metric that takes into account both precision and recall, such as F-Score. A naive metric such as Accuracy will give a high score of 95.0% when a bad algorithm classify all instances with claim status A (not Fraud). 
 
-In addition, a bank might be more interested in correctly classifying all loan default - favoring recall over precision, such as F2. 
+In addition, it will be in our favour to priotise minmizing False Negatives (FN) as we do not want the Fradulent transactions to go away undetected. As such, Precision has to be favoured over recall - F0.5 score.
 
 <p align="center">
   <img src="img/fbeta.png" width=35%/>
@@ -82,13 +80,16 @@ In addition, a bank might be more interested in correctly classifying all loan d
  
 
 ## Model Performance
-We tried two different approaches, Random Forest and Gradient Boosting Classifier.
+Three approaches were experimented - Logistic Regression (baseline), XGBoost and CatBoost.
 
-- Random Forest
+- Logistic Regression
     - Provides a fast iteration if ensemble tree methods work on this dataset. With minimal tuning, we were able to achieve an ROC of 0.84351 (Private Score) using random forest. With further hyper parameter tuning, we are able to achieve a public AUC score of 0.86015 (rank 190) and private AUC score of 0.86582 AUC (rank 187). 
 
 - Gradient Boosting Classifier (XGBoost)
      - Gradient Boosting Classifier is a more sophisicated form of random forest. XGBoost is used as random forest was not able to break through top 100 rank. With extensive parameter tuning, XGBoost was able to achieve a public score of 0.86211 (rank 53) and private score of 0.86728 (rank 96)
+
+- CatBoost
+    -   
 
 
 <p align="center">
@@ -109,10 +110,12 @@ On the other hand, `MonthlyIncome`, `NumberofDependent`, and `NumberofRealEstate
 
 
 ## Future Work
+- [ ] Using other loss functions to penalize the majority class
 - [ ] Ensemble of models to improve overall score 
 - [ ] Hosting model and creating an API to serve model predictions
 
 ## References
-- [Kaggle Competition - Give Me Some Credit](https://www.kaggle.com/c/GiveMeSomeCredit/overview)
+- [Kaggle Competition - Insurance Claims Fraud](https://www.kaggle.com/datasets/mastmustu/insurance-claims-fraud-data))
 - [Scikit-learn](https://scikit-learn.org/stable/)
-- [Tuning XG Boost](https://www.analyticsvidhya.com/blog/2016/02/complete-guide-parameter-tuning-gradient-boosting-gbm-python/)
+- [XGBoost](https://xgboost.readthedocs.io/en/stable/)
+- [CatBoost](https://catboost.ai/)
