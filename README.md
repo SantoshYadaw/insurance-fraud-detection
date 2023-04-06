@@ -23,7 +23,7 @@ The codebase is written in python 3.8.16. The model is based on [sklearn](https:
 
 Overall, 3 models were considered, namely:
  1. Logistic Regression (Baseline)
- 2. XgBoost
+ 2. XGBoost
  3. CatBoost
  
 Of both models, 2. Gradient Boosting Classifier performed better in terms of both ROC and Accuracy. 
@@ -32,9 +32,12 @@ Gradient Boosting Classifier is implemented in [src](/src).
 ## Usage
 1. To build the environment:
 ```pip install -r requirements.txt```
-2. To train the model:
+2. To preprocess the data:
+```python -m src.data_preprocess```
+3. To train the model:
 ```python -m src.train```
-3. Prediction output will be stored in `output/submission.csv`
+4. Prediction output will be stored in `results/trained_model_results.csv`
+5. Trained model will be stored in `models/trained_model` 
 
  Configuration files for src/train can be found in [src/config](/src/config). [src](/src) supports Logistic Regression, XGBoost and CatBoost, to change model, simply update [src/config](/src/config).
 
