@@ -32,9 +32,9 @@ Gradient Boosting Classifier is implemented in [src](/src).
 ## Usage
 1. To build the environment:
 ```pip install -r requirements.txt```
-2. To preprocess the data:
+2. Preprocess the raw data:
 ```python -m src.data_preprocess```
-3. To train the model:
+3. Train the model:
 ```python -m src.train```
 4. Prediction output will be stored in `results/trained_model_results.csv`
 5. Trained model will be stored in `models/trained_model` 
