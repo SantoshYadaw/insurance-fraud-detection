@@ -98,9 +98,13 @@ In summary, the best performance came from the CatBoost model with auc score of 
 ## Insights
 Based on feature importance of the best CatBoost model, the most important feature are `RISK_SEGMENTATION`, `INCIDENT_CITY_6`, and `VENDOR_ID_6` and `HOUSE_TYPE_1` while the least important features are the `CUSTOMER_NAMES`. 
 
-
 <p align="center">
   <img src="img/catboost_feature_importance.png" width=60%/>
+  <br>                  
+</p>
+
+<p align="center">
+  <img src="img/catboost_feature_importance_shaply.png" width=60%/>
   <br>                  
 </p>
 
