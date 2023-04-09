@@ -108,6 +108,7 @@ Based on feature importance of the best CatBoost model, the most important featu
 ## Future Work
 - [ ] Using other loss functions to penalize the majority class
 - [ ] Ensemble of models to improve overall score 
+- [ ] Write test cases for function
 - [ ] Hosting model and creating an API to serve model predictions
 
 ## References
