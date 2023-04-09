@@ -5,14 +5,13 @@ Author: Santosh Yadaw | [LinkedIn](https://www.linkedin.com/in/santosh-yadaw-b32
 
 ## Table of contents
 1. [Overview](#Overview)
-1. [Usage](#usage)
-1. [Exploratory Data Analysis](#exploratory-data-analysis)
-1. [Model Validation](#model-validation) 
-1. [Metrics - ROC AUC](#metrics-roc-auc) 
-1. [Model Performance](#model-performance)
-1. [Insights](#insights)
-1. [Future Work](#future-work)
-1. [References](#references)
+2. [Usage](#usage)
+3. [Exploratory Data Analysis](#exploratory-data-analysis)
+4. [Metrics - ROC AUC](#metrics-roc-auc) 
+5. [Model Performance](#model-performance)
+6. [Insights](#insights)
+7. [Future Work](#future-work)
+8. [References](#references)
 
 ## Overview
 In this assessment, we aim to accurately predict whether any given claim is fraduelent. This task is based on [Kaggle - Insurance Claims Fraud Data](https://www.kaggle.com/datasets/mastmustu/insurance-claims-fraud-data)
