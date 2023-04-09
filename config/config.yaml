@@ -3,19 +3,64 @@ random_seed: 2023
 
 # Data parameters
 data:
-  raw_data_path: "../data/raw/insurance_data.csv"
-  preprocessed_data_path: "../data/preprocessed/preprocessed_data.csv"
+  raw_data_path: "../../data/raw/insurance_data.csv"
+  data_preprocess:
+    target_column:
+      - "CLAIM_STATUS"
+    datetime_columns:
+      - "TXN_DATE_TIME"
+      - "POLICY_EFF_DT"
+      - "LOSS_DT"
+      - "REPORT_DT"
+    redundant_columns:
+      - "ADDRESS_LINE1"
+      - "ADDRESS_LINE2"
+      - "CITY"
+      - "STATE"
+      - "POLICY_NUMBER"
+      - "TRANSACTION_ID"
+      - "VENDOR_ID"
+      - "TXN_DATE_TIME"
+      - "POLICY_EFF_DT"
+      - "LOSS_DT"
+      - "REPORT_DT"
+      - "SSN"
+    numerical_columns:
+      - "PREMIUM_AMOUNT"
+      - "POSTAL_CODE"
+      - "NO_OF_FAMILY_MEMBERS"
+      - "ROUTING_NUMBER"
+      - "ANY_INJURY"
+      - "POLICE_REPORT_AVAILABLE"
+      - "INCIDENT_HOUR_OF_THE_DAY"
+      - "CLAIM_AMOUNT"
+      - "AGE"
+      - "TENURE"
+    ordinal_columns:
+      - "RISK_SEGMENTATION"
+      - "SOCIAL_CLASS"
+      - "CUSTOMER_EDUCATION_LEVEL"
+      - "INCIDENT_SEVERITY"
+    train_test_split:
+      to_stratify: True
+      split_ratio: 0.10
+      to_shuffle: True
+  preprocessed_data_path: "../../data/preprocessed/preprocessed_data.csv"
   target_variable: "CLAIM_STATUS"
   train_test_split: 0.10
-  train_data_path: "../data/final/train_data.csv"
-  test_data_path: "../data/final/test_data.csv"
-  final_results_path: "../results/trained_model_results.csv"
+  train_data_path: "../../data/final/train_data.csv"
+  test_data_path: "../../data/final/test_data.csv"
+  final_results_path: "../../results/trained_model_results.csv"
+  final_results_roc_curve_path: "../../results/roc_curve.png"
+
+# Minority class over sampling
+oversampling_method: "none" # support SMOTE , ADASYNC or none
 
 # Model parameters
 model:
-  model_architecture: "catboost" # supports logistic_regression, xgboost, catboost
+  model_architecture: "logistic_regression" # supports logistic_regression, xgboost, catboost
   use_class_weights: True # supports True - use class weights , False - do not use class weights
-  save_model_artifacts_folder: "../models"
+  save_model_artifacts_folder: "../../models"
 
 # Cat Boost Training parameters
 cat_boost_model:
@@ -28,8 +73,8 @@ cat_boost_model:
   leaf_estimation_method: "Newton"
 
 # Hyperparameters tuninng parameters
-hyeprparameter:
-  tune_hyperparameters: True # supports True - tune model hyperparameters, False - do not tune hyperparameters
+tune_hyperparameters: True # supports True or False. Whether to tune hyperparameter. Currently only support for xgboost and catboost
+hyperparameters:
   xgboost:
     max_depth:
       min: 3
@@ -53,3 +98,14 @@ hyeprparameter:
       max: 10
       step_size: 1
     n_estimators: 180
+  catboost:
+    learning_rate:
+      min: 0.2
+      max: 1.0
+    depth: 7
+    l2_leaf_reg:
+      min: 1
+      max: 10
+    random_strength:
+      min: 0
+      max: 1
