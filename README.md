@@ -4,7 +4,7 @@ Author: Santosh Yadaw | [LinkedIn](https://www.linkedin.com/in/santosh-yadaw-b32
 
 
 ## Table of contents
-1. [Introduction](#introduction)
+1. [Overview](#Overview)
 1. [Usage](#usage)
 1. [Exploratory Data Analysis](#exploratory-data-analysis)
 1. [Model Validation](#model-validation) 
@@ -14,45 +14,44 @@ Author: Santosh Yadaw | [LinkedIn](https://www.linkedin.com/in/santosh-yadaw-b32
 1. [Future Work](#future-work)
 1. [References](#references)
 
-## Introduction
-In this assessment, we aim to accurately predict whether any given claim is fraduelent.
+## Overview
+In this assessment, we aim to accurately predict whether any given claim is fraduelent. This task is based on [Kaggle - Insurance Claims Fraud Data](https://www.kaggle.com/datasets/mastmustu/insurance-claims-fraud-data)
 
-This task is based on [Kaggle - Insurance Claims Fraud Data](https://www.kaggle.com/datasets/mastmustu/insurance-claims-fraud-data)
-
-The codebase is written in python 3.8.16. Theree models were considered:
+The codebase is written in python 3.8.16. Three models were considered:
  1. [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
  2. [XGBoost](https://xgboost.readthedocs.io/en/stable/)
  3. [CatBoost](https://catboost.ai/)
  
-Of the three models, 2. Gradient Boosting Classifier performed better in terms of both ROC. 
-Gradient Boosting Classifier is implemented in [src](/src). 
+Of the three models, 3. Catboost performed better in terms of both AUC score. 
 
 ## Usage
 1. To build the environment:
 ```pip install -r requirements.txt```
-2. Preprocess the raw data:
-```python -m src.data_preprocess```
-3. Train the model:
+2. Go into the data_preprocess folder:
+```cd src/data_preprocess```
+3. Preprocess the raw data: 
+```python -m data_preprocess```
+4. Go into the train folder:
+```cd src/train```
+5. Train the model:
 ```python -m src.train```
-4. Prediction output will be stored in `results/trained_model_results.csv`
-5. Trained model will be stored in `models/trained_model` 
+6. Prediction output will be stored in `results/trained_model_results.csv` and roc curve is stored in the same folder
+7. Trained model will be stored in `models/trained_model` 
 
 Configuration files for src/train can be found in [src/config](/src/config). [src](/src) supports Logistic Regression, XGBoost and CatBoost, to change model, simply update [src/config](/src/config).
 
 ## Exploratory Data Analysis
-Exploratory Data Analysis notebook can be found in [1_eda.ipynb](notebooks/1_eda.ipynb)
+There are three datasets given:
+1. Employee Data - this the master data of the employee ( a.k.a agents or adjusters ) working on the insurance claims
+2. Vendor Data - this is the master data of the vendor who assist insurance company in investigating the claims
+3. Claims Data - this is the claim level transaction details submitted by customer to the insurance company for re-imbursement
 
-## Model Validation
-Stratified-Kfold is used during model validation. Stratified-Kfold (K=5) divides the entire dataset into 5 different portions. Each portion of the fold have equal proportion of each class. The model is then trained 5 times, with each training cycle being trained on 4 portion of the data, while being evaluated on the remaining 1 portion. The average score is then taken as the overall performance.
+Exploratory Data Analysis notebook can be found in [1_eda.ipynb](notebooks/1_eda.ipynb). Please refer to the notebook for the details.
 
-Stratified-Kfold (K=5) is chosen over traditional train-val-test split for a couple of reasons. First, stratified-kfold provides a more accurate representation of model performance. By training and evaluating the model 5 times, each data point have an equal chance of being chosen as the train set and the test set, negating any bias that results from train-test split.
-
-Secondly, since Stratified-Kfold provides a more accurate metrics, we do not have to slice out an extra portion to be used in test data. This allow us to use more data during training.
-
-Lastly, we are able to overcome one huge drawback of Stratified K-fold which is computation. Instead of training the model 1 time, to use stratified k-fold we have to train the model 5 times. In this case, as model training is relatively fast, we are not limited by computation.
+The dataset used for building the model is from the claims data - insurance.csv) where we aim to classify the `CLAIM_STATUS`. There are only two classes - `Class A` and `Class D`. As per the distribution plot below, we can see its an highly imbalanced classification problem with alot more samples in the dataset belonging to Class A than Class D. 
 
 <p align="center">
-  <img src="img/stratified-kfold.png" width=50%/>
+  <img src="img/target_col_dist.png" width=35%/>
   <br>                  
 </p>
 
@@ -64,7 +63,7 @@ ROC AUC stands for Receiver Operating Characteristic - Area Under Curve. The ROC
   <br>                  
 </p>
  
-The difference between ROC AUC vs other metrics such as Accuracy or F1 is that ROC chooses the best model, before any threshold tuning. In a classification scenario, it is possible to tune the threshold in order to predict more positive class, or more negative class. Hence, it is possible for a model to produce many different Accuracy or F1, depending on threshold tuning. 
+The difference between ROC AUC vs other metrics such as Accuracy or F1 is that ROC chooses the best model, before any threshold tuning. In a classification problems, it is possible to tune the threshold in order to predict more positive class, or more negative class. Hence, it is possible for a model to produce many different Accuracy or F1, depending on threshold tuning. 
 
 ROC AUC gets the performance of the model before any threshold tuning by looking at the trade off between True Positive Rate and False Positive Rate. A model with high ROC AUC means that the model performs well in all threshold tuning, and hence could be tuned to maximize any metrics, such as accuracy, F1/F0.5/F2. 
 
@@ -78,33 +77,31 @@ In addition, it will be in our favour to priotise minmizing False Negatives (FN)
   <br>                  
 </p>
  
-
 ## Model Performance
-Three approaches were experimented - Logistic Regression (baseline), XGBoost and CatBoost.
+Three models were experimented - Logistic Regression (baseline), XGBoost and CatBoost. To deal with the class imbalanced issue, we tried out several approaches such as Oversampling - SMOTE, Oversampling: ADYSN and Balancing the Class Weights. Finally, we also performed hyperparameter tuning.
 
-- Logistic Regression
-    - Provides a fast iteration if ensemble tree methods work on this dataset. With minimal tuning, we were able to achieve an ROC of 0.84351 (Private Score) using random forest. With further hyper parameter tuning, we are able to achieve a public AUC score of 0.86015 (rank 190) and private AUC score of 0.86582 AUC (rank 187). 
+- Logistic Regression - We used the logistic regression as our baseline model. It achieved a auc score of 0.54.
+- XgBoost - The XgBoost model did not perform as well compared to the logistic regression model having an auc score of 0.47 at the baseline
+ - Experimenting with oversampling method, SMOTE oversampling helped to improve the performance of the XgBoost model to an auc score 0.52. The oversampling methof of ADYSN did not work as well having a auc score of 0.48
+ - Setting the class weights to be balaanced helped to improve the perforamnce of the XGBoost model by around 0.07 points as compared to the baseline XGBoost. 
+- Catboost - The CatBoost model performed better than the other two models at the baseline auc score of 0.55
+ - Experimenting with oversampling methods like SMOTE and ADYSN, only the ADYSN technique helped to improve the performance of the model to 0.58
+ - Hyperparameter tuning the parameters such as the `learning_rate`, `random_strength`, `depth` and `l2_leaf_reg` did help to improve the performance further to auc score of 0.57.
+ - Combining using ADYSN oversampling method and Hyperparameter tuning, the CatBoost model achieved the highest auc score of 0.59. Hence , being the best model.
 
-- Gradient Boosting Classifier (XGBoost)
-     - Gradient Boosting Classifier is a more sophisicated form of random forest. XGBoost is used as random forest was not able to break through top 100 rank. With extensive parameter tuning, XGBoost was able to achieve a public score of 0.86211 (rank 53) and private score of 0.86728 (rank 96)
-
-- CatBoost
-    -   
-
+In summary, the best performance came from the CatBoost model with auc score of 0.58 after using Oversampling ADYSN and Hyperparameter tuning.  
 
 <p align="center">
-  <img src="img/kaggle_scoreboard.png" width=80%/>
+  <img src="img/leader_board.png" width=80%/>
   <br>                  
 </p>
 
 ## Insights
-Based on permutation importance, the most important feature is `NumberOfTimes90DaysLate`, `NumberOfTimes30-59DaysPastDueNotWorst`, and `NumberofTime60-89DaysPastDueNotWorse`, `RevolvingUtilizationOfUnsecuredLine`, and `Debt Ratio`. This makes sense, as people who have late payment issues and people with many unsecured line before are most likely to default.
-
-On the other hand, `MonthlyIncome`, `NumberofDependent`, and `NumberofRealEstateLoans` have the lowest permutation importance. Interestingly, people with high number of dependent, low monthly income, or have many real estate loans do not default as often. Financial conditions seems to be not highly correlated to financial prudence. 
+Based on feature importance of the best CatBoost model, the most important feature are `RISK_SEGMENTATION`, `INCIDENT_CITY_6`, and `VENDOR_ID_6` and `HOUSE_TYPE_1` while the least important features are the `CUSTOMER_NAMES`. 
 
 
 <p align="center">
-  <img src="img/permutation-importance.png" width=60%/>
+  <img src="img/catboost_feature_importance.png" width=60%/>
   <br>                  
 </p>
 
