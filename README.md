@@ -45,7 +45,7 @@ There are three datasets given:
 2. Vendor Data - this is the master data of the vendor who assist insurance company in investigating the claims
 3. Claims Data - this is the claim level transaction details submitted by customer to the insurance company for re-imbursement
 
-Exploratory Data Analysis notebook can be found in [1_eda.ipynb](notebooks/case_study.ipynb). Please refer to the notebook for the details.
+Exploratory Data Analysis notebook can be found in [case_study.ipynb](notebooks/case_study.ipynb). Please refer to the notebook for the details.
 
 The dataset used for building the model is from the claims data - insurance.csv) where we aim to classify the `CLAIM_STATUS`. There are only two classes - `Class A` and `Class D`. As per the distribution plot below, we can see its an highly imbalanced classification problem with alot more samples in the dataset belonging to Class A than Class D. 
 
