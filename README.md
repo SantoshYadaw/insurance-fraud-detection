@@ -79,11 +79,11 @@ In addition, it will be in our favour to priotise minmizing False Negatives (FN)
 ## Model Performance
 Three models were experimented - Logistic Regression (baseline), XGBoost and CatBoost. To deal with the class imbalanced issue, we tried out several approaches such as Oversampling - SMOTE, Oversampling: ADYSN and Balancing the Class Weights. Finally, we also performed hyperparameter tuning.
 
-- Logistic Regression - We used the logistic regression as our baseline model. It achieved a auc score of 0.54.
-- XgBoost - The XgBoost model did not perform as well compared to the logistic regression model having an auc score of 0.47 at the baseline
+1. Logistic Regression: We used the logistic regression as our baseline model. It achieved a auc score of 0.54.
+2. XgBoost: The XgBoost model did not perform as well compared to the logistic regression model having an auc score of 0.47 at the baseline
  - Experimenting with oversampling method, SMOTE oversampling helped to improve the performance of the XgBoost model to an auc score 0.52. The oversampling methof of ADYSN did not work as well having a auc score of 0.48
  - Setting the class weights to be balaanced helped to improve the perforamnce of the XGBoost model by around 0.07 points as compared to the baseline XGBoost. 
-- Catboost - The CatBoost model performed better than the other two models at the baseline auc score of 0.55
+3. Catboost: The CatBoost model performed better than the other two models at the baseline auc score of 0.55
  - Experimenting with oversampling methods like SMOTE and ADYSN, only the ADYSN technique helped to improve the performance of the model to 0.58
  - Hyperparameter tuning the parameters such as the `learning_rate`, `random_strength`, `depth` and `l2_leaf_reg` did help to improve the performance further to auc score of 0.57.
  - Combining using ADYSN oversampling method and Hyperparameter tuning, the CatBoost model achieved the highest auc score of 0.59. Hence , being the best model.
