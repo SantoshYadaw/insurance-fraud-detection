@@ -91,7 +91,7 @@ Three models were experimented - Logistic Regression (baseline), XGBoost and Cat
 In summary, the best performance came from the CatBoost model with auc score of 0.58 after using Oversampling ADYSN and Hyperparameter tuning.  
 
 <p align="center">
-  <img src="img/leader_board.png" width=80%/>
+  <img src="img/leader_board" width=60%/>
   <br>                  
 </p>
 
